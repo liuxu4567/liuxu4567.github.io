@@ -116,7 +116,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						
+						<a href="/tags/GIS-空间分析/" style="font-size: 10px;">GIS 空间分析</a>
 					</div>
 				</section>
 				
@@ -201,6 +201,86 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-大四那年，空间分析的一个demo" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/05/04/大四那年，空间分析的一个demo/" class="article-date">
+  	<time datetime="2016-05-04T09:28:32.000Z" itemprop="datePublished">2016-05-04</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/04/大四那年，空间分析的一个demo/">大四那年，空间分析的一个demo</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这两天参加了个学校举办的一个GIS制图和系统设计的比赛，用ArcEngine+c# 做了个演示用的“城市购房分析GIS系统” 。</p>
+<p>系统需要实现的空间分析功能：</p>
+<p><strong>所寻求的买房区域要满足以下条件</strong></p>
+<p>(1) 离主要交通要道200米之外，以减少噪声（ST为道路数据中类型为交通要道的要素）。</p>
+<ul>
+<li>在商业中心的服务范围之内，服务范围以商业中心规模的大小（属性字段为YUZHI）来确定。</li>
+<li>距名牌高中750米之内，以便小孩上学便捷。</li>
+<li>距名胜古迹500米之内，环境幽雅。</li>
+</ul>
+<p>(2) 对每个条件进行缓冲区分析，将符合条件的区域取值为1，不符合条件的取值为0，得到各自的分值图。  (需要实现增加删除编辑相关要素字段)</p>
+<p>(3) 运用空间叠置分析对上述4个图层叠加求和，并分等定级，确定适合的区域。</p>
+<p><strong>设计的系统主界面：（是想用Metro风格的，扁平化UI设计看起来舒服）</strong><br>　<img src="http://images.cnitblog.com/blog/569311/201310/30230143-49fd9782302f493a890be95d66c9930b.png" alt="此处输入图片的描述"></p>
+<p>　　针对要素图层的字段值进行空间查询，由选择要素生成缓冲区，也可以由图层生成（通过设定缓冲距离或字段进行动态缓冲区生成），调用的GP工具。其中根据字段动态生成缓冲区，在ArcMap里有问题，调用的GP工具实现也有问题。具体表现为在ArcMap里不响应，在自己做程序里程序死掉。问题不解？
+　</p>
+<p>以下是根据各要素条件生成的缓冲区图：</p>
+<ol>
+<li>道路要素(根据ST字段代表的主干道生成缓冲区)<br><img src="http://images.cnitblog.com/blog/569311/201310/30233340-733bf356c9714d23a4b585ec61f061b3.png" alt="此处输入图片的描述"></li>
+<li>学校要素缓冲区(750m)<br><img src="http://images.cnitblog.com/blog/569311/201310/30233745-e7ec1f69c4d8447a9e937987f0dfbbad.png" alt="此处输入图片的描述"></li>
+<li>名胜古迹缓冲区(500m)<br><img src="http://images.cnitblog.com/blog/569311/201310/30233956-1fa6f91b332247e5b63682fc79b5d35e.png" alt="此处输入图片的描述"></li>
+<li>商业中心缓冲区(那个根据字段动态生成始终有问题，随后改为500m)<br><img src="http://images.cnitblog.com/blog/569311/201310/30234325-158f680ca9ec402aafa309c6dd7b07e2.png" alt="此处输入图片的描述"></li>
+<li>商业中心，学校，名胜古迹三者缓冲区求交<br><img src="http://images.cnitblog.com/blog/569311/201310/30235209-1581613f9ced498db038ed259dd59bdd.png" alt="此处输入图片的描述"></li>
+<li>用道路来擦除交集要素缓冲区<br><img src="http://images.cnitblog.com/blog/569311/201310/30235746-30d05fc475cd4a629e538f134c5f47d3.png" alt="此处输入图片的描述"></li>
+</ol>
+<p>　　另外再做了一些其他东西，如字段计算器之类的，不过主要还是实现空间分析方面。都是基于属性表的求交，擦除，缓冲分析，而不光是几何图像的位置关系。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GIS-空间分析/">GIS 空间分析</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
   
