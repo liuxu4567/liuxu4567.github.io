@@ -240,9 +240,9 @@
 </ul>
 </blockquote>
 <hr>
-<h3 id="需求背景"><a href="#需求背景" class="headerlink" title="需求背景"></a>需求背景</h3><p>　　大概2个月前，一姑娘做毕业设计，课题是“城市银行网点的空间分析”，其中需要某市的ATM点位置数据，目标数据来源就是国内Top2的两家地图之一，需要某市下所有的atm名称和其所在的位置坐标，以shpfile格式数据存储(包含坐标文件(.shp),索引(.shx),属性文件(.dbf))。一年前用python 抓过此类带有位置属性的面数据。这次打算用c#抓一下，相比于java,python,个人比较喜欢c#，从大学时就在用，熟悉的属性字段，熟悉的IDE，windows系统上不用额外的部署运行环境，可谓是拿来即用。</p>
-<h3 id="数据从那获得？"><a href="#数据从那获得？" class="headerlink" title="数据从那获得？"></a>数据从那获得？</h3><p><strong>开放平台</strong><br>　　根据LBS开放平台提供的各种web服务API来请求数据，一般需要注册一个账号获取key。优点是完善的接口文档和调用比较方便；缺点是通常有请求次数限制，提供的服务接口比教少，并且返回的信息量也比较少。</p>
-<p><strong>地图网站</strong><br>　　查看跟踪地图网站的HTTP请求,分析查询参数并构造数据，后端使用Request工具类构造浏览器请求头(比如UserAgent和Referer防盗链),请求数据获取Response。优点是不会受到明确的请求次数限制，获取的数据信息从内容和量上都更丰富全；缺点是需要去分析接口,以及频繁请求后IP受限等，各种与服务端反爬策略斗智斗勇喽。</p>
+<h3 id="需求背景"><a href="#需求背景" class="headerlink" title="需求背景"></a>需求背景</h3><p>　　大概2个月前，一姑娘做毕业设计，课题是“城市银行网点的空间分析”，其中需要某市下所有的atm名称和其所在的位置坐标，以shpfile格式存储数据(包含坐标文件(.shp),索引(.shx),属性文件(.dbf))。一年前用python 抓过此类带有位置属性的面数据。这次打算用c#抓一下，相比于java,python,个人比较喜欢c#，从大学时就在用，熟悉的属性字段，熟悉的IDE，windows系统上不用额外的部署运行环境，可谓是拿来即用。</p>
+<h3 id="数据从那获得？"><a href="#数据从那获得？" class="headerlink" title="数据从那获得？"></a>数据从那获得？</h3><p>目标数据来源是国内Top2的两家地图之一,获取方式一般有以下两种<br><strong>开放平台</strong><br>　　根据LBS开放平台提供的各种web服务API来请求数据，一般需要注册一个账号获取key。优点是完善的接口文档和调用比较方便；缺点是通常有请求次数限制，提供的服务接口从深度和广度上都比教少，并且返回的信息量也比较少。</p>
+<p><strong>地图网站</strong><br>　　查看跟踪地图网站的HTTP请求,分析查询参数并构造数据，后端使用Request工具类构造浏览器请求头(比如UserAgent和Referer防盗链),请求数据获取Response。优点是不会受到明确的请求次数限制，获取的数据信息从内容和量上都更丰富；缺点是需要去分析接口,以及频繁请求后IP受限等，各种与服务端反爬策略斗智斗勇喽。</p>
 <p>从开放平台提供的接口上并没有atm点位置的数据，综合以上，果断选用从<strong>“地图网站”</strong>抓取数据。</p>
 <hr>
 <h3 id="怎么从地图网站获取数据？"><a href="#怎么从地图网站获取数据？" class="headerlink" title="怎么从地图网站获取数据？"></a>怎么从地图网站获取数据？</h3><ol>
@@ -253,10 +253,10 @@
 </ol>
 <p>　　用Chrome浏览器 <strong>F12</strong> 唤出控制台切换到Network里选中XHR(ajax请求)可以看到在搜索框输入关键词内容变化的瞬间，后台在进行ajax请求并响应输出模糊匹配的结果，这些数据被包裹在搜索框的下拉列表中。至于搜索匹配策略和执行效率，具体的服务端和客户端缓存细节不是很清楚，但和这次抓点数据无关，有时间在去了解下。</p>
 <ol>
-<li>最后当我点击搜索时如预料之中看到了一个个气泡点展现在地图上(还好没有提示我滑动验证或IP被拒绝访问)，那么进一步地图上这些气泡点数据从那来的？<br>　　<br><img src="http://yimu.oss-cn-beijing.aliyuncs.com/bd_atm_map.png" alt="bd_atm_pic"></li>
+<li>最后当我点击搜索时如预料之中看到了一个个气泡点展现在地图上(还好没有提示我滑动验证或IP被拒绝访问)，那么进一步就想看看地图上这些气泡点数据从那来的？<br>　　<br><img src="http://yimu.oss-cn-beijing.aliyuncs.com/bd_atm_map.png" alt="bd_atm_pic"></li>
 </ol>
-<p>　　还是唤起控制台在Network里选中XHR(ajax请求)，查一下搜索时调用的具体接口，Chrome浏览器装上JSONView扩展(格式化输出json数据)，在新标签页打开这个链接。</p>
-<p> 4.　仔细分析一下不难发现 <strong>location</strong>这个字段,结合其他字段描述值，地图上的atm气泡点数据坐标源来从此获得，那么接下来就到了编码环节了。<br> <img src="http://yimu.oss-cn-beijing.aliyuncs.com/amap_atm_info.png" alt="amap_atm_info"></p>
+<p>　　还是唤起控制台在Network里选中XHR(ajax请求)，查一下搜索时调用的具体接口，Chrome浏览器装上JSONView扩展(格式化显示json数据)，在新标签页打开这个链接。</p>
+<p> 4.　仔细分析一下不难发现 <strong>location</strong>这个字段,结合其他字段描述信息，地图上的atm气泡点数据坐标源来从此获得。ok分析完后，此时也大致有了编码的思路。<br> <img src="http://yimu.oss-cn-beijing.aliyuncs.com/amap_atm_info.png" alt="amap_atm_info"></p>
 <hr>
 <h3 id="编码片段"><a href="#编码片段" class="headerlink" title="编码片段"></a>编码片段</h3><ol>
 <li>准备阶段<br>建议使用<a href="https://www.nuget.org/" target="_blank" rel="external">NuGet</a>管理依赖的第三方程序包，VS2013已经集成了NuGet，用高版本的VS吧，那些老旧的IDE让它们见鬼去吧，以下是几个开源工具类的介绍。</li>
