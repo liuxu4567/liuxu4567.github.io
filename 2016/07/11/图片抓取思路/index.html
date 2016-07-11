@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>图片抓取思路 | 刘旭的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="当你的工作成为一种体力劳动，而自己无法从中获得新的体验和知识的时候，需要警惕究竟发生了什么。在一段安逸的日子后，尤其的需要做些尝试。几个月前的一次尝试，过程中由于一些原因没能进行下去，下面是我的一些尝试，总结一下。
+做什么？　　抓取一个旅游景点网站的导览图片，并按照省市区+景区名称命名，以文件目录方式或mongodb存储。网站原貌左侧面板是城市区划目录树，右侧面板是对应行政区下的景区(分">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图片抓取思路">
+<meta property="og:url" content="http://yoursite.com/2016/07/11/图片抓取思路/index.html">
+<meta property="og:site_name" content="刘旭的博客">
+<meta property="og:description" content="当你的工作成为一种体力劳动，而自己无法从中获得新的体验和知识的时候，需要警惕究竟发生了什么。在一段安逸的日子后，尤其的需要做些尝试。几个月前的一次尝试，过程中由于一些原因没能进行下去，下面是我的一些尝试，总结一下。
+做什么？　　抓取一个旅游景点网站的导览图片，并按照省市区+景区名称命名，以文件目录方式或mongodb存储。网站原貌左侧面板是城市区划目录树，右侧面板是对应行政区下的景区(分">
+<meta property="og:image" content="http://yimu.oss-cn-beijing.aliyuncs.com/qiu.jpg">
+<meta property="og:image" content="http://yimu.oss-cn-beijing.aliyuncs.com/meet99-guide.png">
+<meta property="og:image" content="http://yimu.oss-cn-beijing.aliyuncs.com/mtt99-LXCrawler.png">
+<meta property="og:updated_time" content="2016-07-11T13:02:54.627Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="图片抓取思路">
+<meta name="twitter:description" content="当你的工作成为一种体力劳动，而自己无法从中获得新的体验和知识的时候，需要警惕究竟发生了什么。在一段安逸的日子后，尤其的需要做些尝试。几个月前的一次尝试，过程中由于一些原因没能进行下去，下面是我的一些尝试，总结一下。
+做什么？　　抓取一个旅游景点网站的导览图片，并按照省市区+景区名称命名，以文件目录方式或mongodb存储。网站原貌左侧面板是城市区划目录树，右侧面板是对应行政区下的景区(分">
+<meta name="twitter:image" content="http://yimu.oss-cn-beijing.aliyuncs.com/qiu.jpg">
+  
+    <link rel="alternative" href="/atom.xml" title="刘旭的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://avatars0.githubusercontent.com/u/6435608?v=3&amp;u=5255979f36c4709365b68d2a37f4d0af4ed17eed&amp;s=140" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">刘旭</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">人生能有几回搏，今日不搏何时搏</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/liuxu4567" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="http://weibo.com/p/1005052722478374/home?from=page_100505&mod=TAB&is_all=1#place" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="http://www.cnblogs.com/lxGIS/" title="rss">rss</a>
+					        
+								<a class="zhihu" target="_blank" href="https://www.zhihu.com/people/liu-xu-43" title="zhihu">zhihu</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/GIS-空间分析/" style="font-size: 10px;">GIS 空间分析</a> <a href="/tags/c-爬虫-winform/" style="font-size: 10px;">c# 爬虫 winform</a> <a href="/tags/nginx-c-爬虫/" style="font-size: 10px;">nginx c# 爬虫</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">奥巴马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">卡卡的美丽传说</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">本泽马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">吉格斯的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">习大大大不同</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">托蒂的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">2014年毕业于西安科技大学地理信息系统专业，现就职于高德地图。后端工程师，GIS爱好者。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">刘旭</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="https://avatars0.githubusercontent.com/u/6435608?v=3&amp;u=5255979f36c4709365b68d2a37f4d0af4ed17eed&amp;s=140" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">刘旭</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">人生能有几回搏，今日不搏何时搏</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/liuxu4567" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/p/1005052722478374/home?from=page_100505&mod=TAB&is_all=1#place" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="http://www.cnblogs.com/lxGIS/" title="rss">rss</a>
+			        
+						<a class="zhihu" target="_blank" href="https://www.zhihu.com/people/liu-xu-43" title="zhihu">zhihu</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-图片抓取思路" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/07/11/图片抓取思路/" class="article-date">
+  	<time datetime="2016-07-11T13:02:21.000Z" itemprop="datePublished">2016-07-11</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      图片抓取思路
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx-c-爬虫/">nginx c# 爬虫</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>　<img src="http://yimu.oss-cn-beijing.aliyuncs.com/qiu.jpg" alt="qiu">　</p>
+<p>　　当你的工作成为一种体力劳动，而自己无法从中获得新的体验和知识的时候，需要警惕究竟发生了什么。在一段安逸的日子后，尤其的需要做些尝试。几个月前的一次尝试，过程中由于一些原因没能进行下去，下面是我的一些尝试，总结一下。</p>
+<h2 id="做什么？"><a href="#做什么？" class="headerlink" title="做什么？"></a>做什么？</h2><p>　　抓取一个旅游景点网站的导览图片，并按照省市区+景区名称命名，以文件目录方式或mongodb存储。网站原貌左侧面板是城市区划目录树，右侧面板是对应行政区下的景区(分析发现最多显示该行政区下的100个景区)；点击右侧面板景区如颐和园，重新又开启了一个页面，我们需要获取的目标图片为该页面下的景区游览图:<br>　　<img src="http://yimu.oss-cn-beijing.aliyuncs.com/meet99-guide.png" alt="meet99-guide">
+　　</p>
+<h2 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h2><p>设计大体分为三个步骤；前两步为预处理前的准备，最后是下载；说来简单，中间有很多具体实现的细节要去考虑:</p>
+<ol>
+<li>获取行政区划及其对应的网址；这部分因为几乎是固定的，抓取完毕即可按日期持久化存储为本地文件；–(预处理)</li>
+<li>根据行政区划网址进一步分析并获取其下所有的景区链接地址，抓取完毕即可按日期持久化存储为本地文件；–(预处理)</li>
+<li>根据行政区划下的景区链接进一步分析导览图片所的DOM节点对应的uri，下载文件，存储在mongodb中；–(抓取)</li>
+</ol>
+<p>用到的一些开源库：</p>
+<table>
+<thead>
+<tr>
+<th>开源库</th>
+<th style="text-align:right">类型</th>
+<th style="text-align:center">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="http://www.newtonsoft.com/json" target="_blank" rel="external">Json.Net</a></td>
+<td style="text-align:right">高效的.Net JSON框架库</td>
+<td style="text-align:center">解析响应返回的json数据</td>
+</tr>
+<tr>
+<td><a href="http://htmlagilitypack.codeplex.com/" target="_blank" rel="external">HtmlAgilityPack</a></td>
+<td style="text-align:right">一个支持用XPath来解析HTML的类库</td>
+<td style="text-align:center">解析前端html元素和标签</td>
+</tr>
+<tr>
+<td><a href="https://bitbucket.org/rflechner/scrapysharp/wiki/Home" target="_blank" rel="external">ScrapySharp</a></td>
+<td style="text-align:right">从Url获取Html数据,提供CSS选择器的方式解析Html节点</td>
+<td style="text-align:center">ScrapySharp的Html解析是基于大名鼎鼎的HtmlAgilityPack来实现的</td>
+</tr>
+</tbody>
+</table>
+<p>　　</p>
+<h2 id="问题1－403-Forbidden"><a href="#问题1－403-Forbidden" class="headerlink" title="问题1－403 Forbidden"></a>问题1－403 Forbidden</h2><p>　　很自然自然想到分析导览图的url，通过后台伪造请求头，来批量请求地址下载导览图。尤其是需要伪造Referer，因为网站往往通过Referer来限定只有本站的请求才可以访问到图片，音频等资源，从而防止资源被盗链。</p>
+<blockquote>
+<p>什么是HTTP Referer？<br>　　简言之，HTTP Referer是header的一部分，当浏览器向web服务器发送请求的时候，一般会带上Referer，告诉服务器我是从哪个页面链接过来的，服务器籍此可以获得一些信息用于处理。比如从我主页上链接到一个朋友那里，他的服务器就能够从HTTP Referer中统计出每天有多少用户点击我主页上的链接访问他的网站。<br>Referer其实应该是英文单词Referrer，不过拼错的人太多了，所以编写标准的人也就将错就错了。</p>
+</blockquote>
+<p>接着按照思路开始请求了图片地址，结果出现403 Forbidden；</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>咨询了老一辈程序员的些建议，并Google参考了下面两篇文章：</p>
+<ol>
+<li><a href="http://blog.chenyuanyang.com/post/%E8%A7%A3%E5%86%B3%E5%9B%BE%E7%89%87%E5%BC%95%E7%94%A8%E7%94%B1%E4%BA%8E%E5%AF%B9%E6%96%B9%E9%98%B2%E7%9B%97%E9%93%BE%E5%A4%84%E7%90%86%E5%8A%A0%E8%BD%BD%E5%A4%B1%E8%B4%A5%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95" target="_blank" rel="external">解决图片引用由于对方防盗链处理加载失败的解决方法</a></li>
+<li><a href="http://jingxin.me/blog/blog/2014/10/10/li-yong-nginx-shi-xian-jing-tai-zi-yuan-de-fan-xiang-dai-li/" target="_blank" rel="external">利用 Nginx 实现静态资源的反向代理</a></li>
+</ol>
+<p>用nginx做反向代理，在配置文件nginx.conf中，http→server→location 下设置proxy_pass来指定当前代理的图片网站资源父目录的相对地址，程序中通过解析图片链接来获取图片名称并动态拼接在location所指定的url后面；设置proxy_set_header referer来指定Referer；</p>
+<pre><code>server {
+    listen       8011;
+    server_name  localhost;
+
+    location /image/ {
+        proxy_pass 代理资源地址;
+        proxy_set_header referer  referer头信息;
+        }
+    }
+</code></pre><h2 id="问题2-IP频繁请求被限制"><a href="#问题2-IP频繁请求被限制" class="headerlink" title="问题2-IP频繁请求被限制"></a>问题2-IP频繁请求被限制</h2><p>　　此次尝试当请求到50条左右，服务端返回500错误，试了让主线程等待10秒后再次请求结果还是500错误；浏览器也无法访问主站，大概会被限制一天时间无法访问；<br>　　从网上找了一些代理IP，通过Http代理设置类WebProxy的 方法类来代理访问，但全是失效的，还有一个代理IP实际跳转到它的网站；搞得我有点懵,难道是我方法不对?求大神们指导</p>
+<p> 代理IP有什么用?</p>
+<blockquote>
+<ul>
+<li>突破自身IP访问限制，访问国外站点。如：教育网、169网等网络用户可以通过代理访问国外网站。 </li>
+<li>访问一些单位或团体内部资源，如某大学FTP(前提是该代理地址在该资源的允许访问范围之内)，使用教育网内地址段免费代理服务器，就可以用于对教育 网开放的各类FTP下载上传，以及各类资料查询共享等服务。 </li>
+<li>突破中国电信的IP封锁：中国电信用户有很多网站是被限制访问的，这种限制是人为的，不同Serve对地址的封锁是不同的。所以不能访问时可以换一个国 外的代理服务器试试。 </li>
+<li>提高访问速度：通常代理服务器都设置一个较大的硬盘缓冲区,当有外界的信息通过时,同时也将其保存到缓冲区中,当其他用户再访问相同的信息时， 则直接由缓冲区中取出信息，传给用户，以提高访问速度。 </li>
+<li>隐藏真实IP：上网者也可以通过这种方法隐藏自己的IP，免受攻击。 </li>
+</ul>
+</blockquote>
+<p>最后一点是”隐藏真实IP”是我们所关心的，那就可以用代理IP做网络爬虫。</p>
+<h2 id="解决思路"><a href="#解决思路" class="headerlink" title="解决思路"></a>解决思路</h2><ol>
+<li>有的网站提供付费的高匿IP接口，可以批量获取，来做IP代理池</li>
+<li>adsl动态ip拨号服务器，动态切换断开来获取IP，没有深入了解</li>
+</ol>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>　　<img src="http://yimu.oss-cn-beijing.aliyuncs.com/mtt99-LXCrawler.png" alt="meet99-LXCrawler"></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/05/12/2008年5-12写的一篇作文/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">2008年5.12写的一篇作文</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="图片抓取思路" data-title="图片抓取思路" data-url="http://yoursite.com/2016/07/11/图片抓取思路/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"liuxu1992"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 刘旭
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>
